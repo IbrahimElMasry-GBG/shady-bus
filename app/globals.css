@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens.
+ *
+ * Light values live on bare `:root` so a colour always has a definition outside
+ * any media query. Dark values are declared twice — once under
+ * `prefers-color-scheme` for the OS setting, once under `[data-theme="dark"]`
+ * so an explicit toggle wins in both directions.
+ *
+ * The chart mark colours (`--series-1`, `--mark-alert`) come from the validated
+ * data-viz palette; see components/ExposureChart.tsx for why only those two are
+ * used as marks.
+ */
+
+:root {
+  color-scheme: light;
+
+  --surface-page: #f9f9f7;
+  --surface-card: #fcfcfb;
+  --surface-sunken: #f2f2ee;
+
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+
+  --border-hairline: rgba(11, 11, 11, 0.1);
+  --border-strong: #c3c2b7;
+  --gridline: #e1e0d9;
+
+  /* Chart marks — validated as a pair for CVD separation on this surface. */
+  --series-1: #2a78d6;
+  --mark-alert: #d03b3b;
+
+  /* Status — always paired with an icon and a text label, never colour alone. */
+  --status-good: #0ca30c;
+  --status-good-text: #006300;
+  --status-warning: #fab219;
+  --status-critical: #d03b3b;
+
+  --accent: #2a78d6;
+  --accent-contrast: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --surface-page: #0d0d0d;
+    --surface-card: #16181d;
+    --surface-sunken: #1f2229;
+
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+
+    --border-hairline: rgba(255, 255, 255, 0.12);
+    --border-strong: #383835;
+    --gridline: #2c2c2a;
+
+    --series-1: #3987e5;
+    --mark-alert: #d03b3b;
+
+    --status-good: #0ca30c;
+    --status-good-text: #0ca30c;
+    --status-warning: #fab219;
+    --status-critical: #d03b3b;
+
+    --accent: #3987e5;
+    --accent-contrast: #ffffff;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --surface-page: #0d0d0d;
+  --surface-card: #16181d;
+  --surface-sunken: #1f2229;
+
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+
+  --border-hairline: rgba(255, 255, 255, 0.12);
+  --border-strong: #383835;
+  --gridline: #2c2c2a;
+
+  --series-1: #3987e5;
+  --mark-alert: #d03b3b;
+
+  --status-good: #0ca30c;
+  --status-good-text: #0ca30c;
+  --status-warning: #fab219;
+  --status-critical: #d03b3b;
+
+  --accent: #3987e5;
+  --accent-contrast: #ffffff;
+}
+
+/* Expose the tokens to Tailwind utilities (bg-surface-card, text-muted, …). */
+@theme inline {
+  --color-surface-page: var(--surface-page);
+  --color-surface-card: var(--surface-card);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-hairline: var(--border-hairline);
+  --color-strong: var(--border-strong);
+  --color-series-1: var(--series-1);
+  --color-alert: var(--mark-alert);
+  --color-good: var(--status-good);
+  --color-accent: var(--accent);
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numeric columns must align vertically; proportional figures elsewhere. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Native date/time pickers keep their indicator visible in dark mode. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) input[type="date"]::-webkit-calendar-picker-indicator,
+  :root:not([data-theme="light"]) input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.7);
+  }
+}
